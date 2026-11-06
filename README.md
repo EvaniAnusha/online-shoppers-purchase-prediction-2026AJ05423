@@ -1,42 +1,98 @@
 # Online Shoppers Purchase Prediction
 
-## Project Overview
+## Problem Statement
 
-This project compares five machine learning classification algorithms to predict whether an online shopping session will result in a purchase.
+This project compares five machine-learning classification algorithms to predict whether an online shopping session will result in a purchase.
 
-The models are trained and evaluated using the **Online Shoppers Purchasing Intention** dataset from the UCI Machine Learning Repository.
+The models are trained and evaluated using the **Online Shoppers Purchasing Intention** dataset from the UCI Machine Learning Repository. The objective is to compare the performance of different classification algorithms using standard evaluation metrics and demonstrate the trained models through an interactive Streamlit web application.
 
 ## Dataset Information
 
 - **Dataset:** Online Shoppers Purchasing Intention
 - **Source:** UCI Machine Learning Repository
+- **Dataset ID:** 468
+- **Original instances:** 12,330
 - **Total instances after cleaning:** 12,205
 - **Input features:** 17
+- **Numerical features:** 10
+- **Categorical features:** 7
 - **Target variable:** Revenue
 - **Classification type:** Binary Classification
 
+The original dataset contained 12,330 rows and 18 columns. After removing 125 duplicate rows, 12,205 instances remained. No missing values were found.
+
+A stratified 80:20 train-test split was used, resulting in 9,764 training instances and 2,441 testing instances.
+
+Numerical features were standardized using `StandardScaler`, while categorical features were transformed using `OneHotEncoder`. The preprocessing pipeline was fitted only on the training data to avoid data leakage.
+
+## GitHub Repository Link
+
+**GitHub Repository:**
+
+https://github.com/EvaniAnusha/online-shoppers-purchase-prediction-2026AJ05423
+
+The repository contains the application source code, trained classification models, preprocessing pipeline, test dataset, dependency information, and project documentation.
+
 ## Machine Learning Models
 
-The following five classifiers are implemented:
+The following five classification algorithms were implemented using the same dataset:
 
 1. Logistic Regression
-2. Decision Tree
+2. Decision Tree Classifier
 3. K-Nearest Neighbors (KNN)
 4. Gaussian Naive Bayes
 5. Support Vector Machine (SVM)
 
 ## Evaluation Metrics
 
-Each model is evaluated using the following metrics:
+Each model was evaluated using the following six metrics:
 
-- Accuracy
-- Area Under the ROC Curve (AUC)
-- Precision
-- Recall
-- F1 Score
-- Matthews Correlation Coefficient (MCC)
+- **Accuracy:** Measures the proportion of correctly classified instances.
+- **AUC:** Measures the model's ability to distinguish between the two classes.
+- **Precision:** Measures how many predicted positive instances were actually positive.
+- **Recall:** Measures how many actual positive instances were correctly identified.
+- **F1 Score:** Harmonic mean of Precision and Recall.
+- **Matthews Correlation Coefficient (MCC):** Measures the quality of binary classifications, considering all four confusion-matrix categories.
 
-Confusion matrices and classification reports are also generated for model evaluation.
+## Model Performance Comparison
+
+All five models were evaluated on the same held-out test dataset containing 2,441 instances. The results are rounded to four decimal places.
+
+| ML Model | Accuracy | AUC | Precision | Recall | F1 Score | MCC |
+|---|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | 0.8869 | 0.8996 | 0.7524 | 0.4136 | 0.5338 | 0.5032 |
+| Decision Tree | 0.8558 | 0.7376 | 0.5373 | 0.5654 | 0.5510 | 0.4654 |
+| K-Nearest Neighbors | 0.8734 | 0.7958 | 0.6622 | 0.3901 | 0.4909 | 0.4435 |
+| Gaussian Naive Bayes | 0.2773 | 0.7502 | 0.1756 | 0.9791 | 0.2978 | 0.1375 |
+| Support Vector Machine | 0.8955 | 0.8733 | 0.7361 | 0.5183 | 0.6083 | 0.5614 |
+
+## Observations on Model Performance
+
+### Logistic Regression
+
+Logistic Regression achieved an accuracy of 0.8869 and the highest AUC score of 0.8996. It also achieved good precision of 0.7524. However, its recall of 0.4136 indicates that some actual purchasing sessions were not identified correctly.
+
+### Decision Tree
+
+The Decision Tree classifier achieved an accuracy of 0.8558. It demonstrated a moderate balance between precision (0.5373) and recall (0.5654). Its F1 score was 0.5510, although its AUC score was comparatively lower at 0.7376.
+
+### K-Nearest Neighbors (KNN)
+
+KNN achieved an accuracy of 0.8734 and precision of 0.6622. However, its recall of 0.3901 was relatively low, indicating that it missed a considerable number of actual purchasing sessions.
+
+### Gaussian Naive Bayes
+
+Gaussian Naive Bayes achieved the highest recall of 0.9791 among all five models. However, its precision (0.1756) and accuracy (0.2773) were considerably lower due to a large number of false-positive predictions.
+
+### Support Vector Machine (SVM)
+
+Support Vector Machine achieved the highest accuracy (0.8955), F1 score (0.6083), and MCC (0.5614). It demonstrated a stronger overall balance between precision and recall compared with the other classifiers.
+
+### Overall Winner
+
+**Support Vector Machine (SVM)** is the overall winner for this dataset based on its highest accuracy, F1 score, and MCC.
+
+However, Logistic Regression achieved the highest AUC, while Gaussian Naive Bayes achieved the highest recall. The results demonstrate that the best-performing classifier can vary depending on the evaluation metric considered.
 
 ## Project Structure
 
@@ -63,11 +119,9 @@ Confusion matrices and classification reports are also generated for model evalu
 
 - Python 3.12
 - Git
-- Visual Studio Code (or any Python IDE)
+- Visual Studio Code or another Python IDE
 
 ### 1. Clone the Repository
-
-Once the GitHub repository is created, clone it using:
 
 ```bash
 git clone https://github.com/EvaniAnusha/online-shoppers-purchase-prediction-2026AJ05423.git
@@ -76,7 +130,7 @@ git clone https://github.com/EvaniAnusha/online-shoppers-purchase-prediction-202
 ### 2. Navigate to the Project Directory
 
 ```bash
-cd 2026AJ05423_Project
+cd online-shoppers-purchase-prediction-2026AJ05423
 ```
 
 ### 3. Create a Virtual Environment
@@ -115,51 +169,41 @@ python -m streamlit run app.py
 
 Open the local URL displayed in the terminal, usually:
 
+```text
 http://localhost:8501
+```
 
 ## Application Features
 
+The Streamlit application provides the following features:
+
 - Upload a CSV test dataset.
-- Validate the presence of all 17 required input features and the target column (`Revenue`).
+- Validate all 17 required input features and the target column (`Revenue`).
 - Preview the uploaded dataset.
-- Select one of the five trained classification models.
+- Select one of the five trained classification models through a dropdown.
 - Evaluate the uploaded dataset using the selected saved model.
-- Display all six evaluation metrics.
+- Display all six evaluation metrics: Accuracy, AUC, Precision, Recall, F1 Score, and MCC.
 - Visualize the confusion matrix.
 - Display the classification report.
 
-The application uses previously trained and saved machine learning models. It does not retrain models when a CSV file is uploaded.
-
-## Model Performance
-
-The five classifiers were evaluated using the same test dataset.
-
-| Model | Accuracy | AUC | Precision | Recall | F1 Score | MCC |
-|---|---:|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.8869 | 0.8996 | 0.7524 | 0.4136 | 0.5338 | 0.5032 |
-| Decision Tree | 0.8558 | 0.7376 | 0.5373 | 0.5654 | 0.5510 | 0.4654 |
-| K-Nearest Neighbors | 0.8734 | 0.7958 | 0.6622 | 0.3901 | 0.4909 | 0.4435 |
-| Gaussian Naive Bayes | 0.2773 | 0.7502 | 0.1756 | 0.9791 | 0.2978 | 0.1375 |
-| Support Vector Machine | 0.8955 | 0.8733 | 0.7361 | 0.5183 | 0.6083 | 0.5614 |
+The application loads previously trained models and the saved preprocessing pipeline. It evaluates uploaded test data without retraining the models.
 
 ## Deployment
 
-The application is intended to be deployed using Streamlit Community Cloud.
+The application is deployed using **Streamlit Community Cloud**.
 
-Deployment steps:
+The GitHub repository is connected to Streamlit Community Cloud, with `app.py` selected as the main application file.
 
-1. Upload the project repository to GitHub.
-2. Sign in to Streamlit Community Cloud.
-3. Connect your GitHub account.
-4. Select the project repository.
-5. Choose `app.py` as the main application file.
-6. Deploy the application.
-7. Verify that the deployed application loads and evaluates the test dataset successfully.
+**Live Streamlit Application:**
+
+https://online-shoppers-purchase-prediction-2026aj05423-oevtditwfy8tjg.streamlit.app/
+
+The deployed application was verified in both a normal browser session and an Incognito browser session. It successfully displayed the CSV upload interface and confirmed that all five trained models and the preprocessing pipeline loaded successfully.
 
 ## Conclusion
 
-Among the five evaluated classifiers, Support Vector Machine achieved the highest Accuracy (0.8955), F1 Score (0.6083), and MCC (0.5614). Logistic Regression achieved the highest AUC (0.8996).
+This project demonstrates the implementation and comparative evaluation of five machine-learning classification algorithms for predicting online shopping purchase intention.
 
-Gaussian Naive Bayes achieved the highest Recall (0.9791), but its Precision and Accuracy were considerably lower.
+Among the evaluated models, Support Vector Machine achieved the best overall performance based on Accuracy (0.8955), F1 Score (0.6083), and MCC (0.5614). Logistic Regression achieved the highest AUC (0.8996), while Gaussian Naive Bayes achieved the highest Recall (0.9791), but with considerably lower Precision and Accuracy.
 
-The comparison demonstrates the performance differences between multiple machine learning classification algorithms on the Online Shoppers Purchasing Intention dataset.
+The project also demonstrates an end-to-end machine-learning workflow, including data preprocessing, model training, evaluation, artifact storage, and deployment of an interactive Streamlit application.
